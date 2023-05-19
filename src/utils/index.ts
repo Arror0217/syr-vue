@@ -20,3 +20,17 @@ export const getCssVariableValue = (cssVariableName: string) => {
   }
   return cssVariableValue
 }
+
+export const getFormData = (data: any): FormData => {
+  const formData = new FormData()
+
+  if (!data) {
+    return formData
+  }
+
+  for (const v in data) {
+    formData.append(v, data[v])
+  }
+
+  return formData
+}

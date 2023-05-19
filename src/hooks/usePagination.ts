@@ -1,6 +1,9 @@
 import { reactive } from "vue"
 
 interface IDefaultPaginationData {
+  pageNo: number
+  OpenId: string
+  keyward: string
   total: number
   currentPage: number
   pageSizes: number[]
@@ -18,6 +21,9 @@ interface IPaginationData {
 
 /** 默认的分页参数 */
 const defaultPaginationData: IDefaultPaginationData = {
+  pageNo: 1,
+  OpenId: "",
+  keyward: "",
   total: 0,
   currentPage: 1,
   pageSizes: [10, 20, 50],
@@ -29,9 +35,9 @@ export function usePagination(_paginationData: IPaginationData = {}) {
   /** 合并分页参数 */
   const paginationData = reactive(Object.assign({ ...defaultPaginationData }, _paginationData))
 
-  /** 改变当前页码 */
+  /** 改变页码 */
   const handleCurrentChange = (value: number) => {
-    paginationData.currentPage = value
+    paginationData.pageNo = value
   }
 
   /** 改变页面大小 */

@@ -1,3 +1,6 @@
+// import { KeepAlive } from "vue"
+// import { messageTypes } from "element-plus"
+// import { KeepAlive } from "vue"
 import { type RouteRecordRaw, createRouter, createWebHashHistory, createWebHistory } from "vue-router"
 
 const Layout = () => import("@/layout/index.vue")
@@ -34,6 +37,7 @@ export const constantRoutes: RouteRecordRaw[] = [
   },
   {
     path: "/login",
+    name: "Login",
     component: () => import("@/views/login/index.vue"),
     meta: {
       hidden: true
@@ -113,6 +117,24 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: {
           title: "Vxe Table",
           keepAlive: true
+        }
+      },
+      {
+        path: "dragon",
+        name: "Dragon",
+        component: () => import("@/views/table/dragon.vue"),
+        meta: {
+          title: "龙窟谜语",
+          KeepAlive: true
+        }
+      },
+      {
+        path: "riddle",
+        name: "Riddle",
+        component: () => import("@/views/table/riddle.vue"),
+        meta: {
+          title: "谜语管理",
+          KeepAlive: true
         }
       }
     ]
