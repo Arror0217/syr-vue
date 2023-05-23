@@ -8,3 +8,27 @@ export function getRiddleDataApi(data: Table.IGetRiddleRequestData) {
     data
   })
 }
+/** 增 */
+export function createRiddleTableDataApi(data: Table.ICreateRiddleTableRequestData) {
+  return request({
+    url: "/v1/blackHole/addRiddle",
+    method: "post",
+    data
+  })
+}
+/** 更新*/
+export function updateRiddleTableDataApi(data: Table.IUpdateRiddleTableRequestData) {
+  return request({
+    url: "/v1/blackHole/updateRiddle",
+    method: "put",
+    data
+  })
+}
+
+export function deleteRiddleApi(data: Table.IDeleteRiddleRequestData) {
+  return request({
+    url: "/v1/blackHole/disableRiddle",
+    method: "put",
+    data
+  })
+}

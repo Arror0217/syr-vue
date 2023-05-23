@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import { reactive, ref, computed } from "vue"
+import { ElMessage } from "element-plus"
+
+import { reactive, ref } from "vue"
 import { useRouter } from "vue-router"
 // import { useUserStore } from "@/store/modules/user"
 // import { User, Lock, Key, Picture, Loading } from "@element-plus/icons-vue"
@@ -23,15 +25,18 @@ const loginForm: ILoginRequestData = reactive({
 })
 /** 登录表单校验规则 */
 const loginFormRules: FormRules = {
-  phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
-  code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+  phoneNum: [{ required: true, message: "请输入手机号", trigger: "blur" }],
+  smsCode: [{ required: true, message: "请输入验证码", trigger: "blur" }]
 }
 /** 登录逻辑 */
 const handleLogin = () => {
   loginFormRef.value?.validate((valid: boolean) => {
     if (valid) {
       loading.value = true
-
+      if (loginForm.phoneNum === "" || loginForm.smsCode === "") {
+        ElMessage.warning("请完善表单！")
+        return
+      }
       const data = getFormData({ phoneNum: loginForm.phoneNum, smsCode: loginForm.smsCode })
       loginApi(data)
         .then((res) => {
@@ -53,53 +58,34 @@ const handleLogin = () => {
 
 const createCode = () => {
   const data1 = getFormData({ phoneNum: loginForm.phoneNum })
+  // if (!loginForm.phoneNum) {
+  //   getLoginCodeApi(data1).then(() => {
+  //     startCountdown()
+  //   })
+  // } else return false
+  getLoginCodeApi(data1).then(() => {
+    startCountdown()
+  })
+}
+// 开始倒计时
+function startCountdown(): void {
+  let timeLeft = 60
+  countdown.value = timeLeft
 
-  getLoginCodeApi(data1)
-  // 倒计时结束后将按钮恢复为可点击状态
-  function resetButtonStatus(): void {
-    countdown.value = 0
-  }
-
-  // 开始倒计时
-  function startCountdown(): void {
-    let timeLeft = 60
+  const intervalId = setInterval(() => {
+    timeLeft--
     countdown.value = timeLeft
 
-    const intervalId = setInterval(() => {
-      timeLeft--
-      countdown.value = timeLeft
-
-      if (timeLeft === 0) {
-        clearInterval(intervalId)
-        resetButtonStatus()
-      }
-    }, 1000)
-  }
-  // 使用计算属性，根据倒计时剩余时间更新按钮文本和是否可点击状态
-  const buttonText = computed(() => {
-    if (countdown.value > 0) {
-      return `重新发送(${countdown.value}s)`
-    } else {
-      return "获取验证码"
+    if (timeLeft === 0) {
+      clearInterval(intervalId)
+      resetButtonStatus()
     }
-  })
+  }, 1000)
+}
 
-  const buttonDisabled = computed(() => {
-    return countdown.value > 0
-  })
-
-  function handleClick(): void {
-    if (!countdown.value) {
-      startCountdown()
-    }
-  }
-
-  return {
-    countdown,
-    buttonText,
-    buttonDisabled,
-    handleClick
-  }
+// 倒计时结束后将按钮恢复为可点击状态
+function resetButtonStatus(): void {
+  countdown.value = 0
 }
 </script>
 
@@ -120,11 +106,13 @@ const createCode = () => {
             <div class="send-wrap">
               <el-input v-model="loginForm.smsCode" class="input-w" maxlength="6" autocomplete="off" />
               <el-button class="btn" @click="createCode" :disabled="countdown > 0">
-                {{ countdown === 0 ? "获取验证码" : `重新发送(${countdown}s)` }}
+                {{ countdown === 0 ? "获取验证码" : `${countdown}s` }}
               </el-button>
             </div>
           </el-form-item>
-          <el-button :loading="loading" type="primary" size="large" @click.prevent="handleLogin"> 登 录 </el-button>
+          <el-button class="button" :loading="loading" type="primary" size="large" @click.prevent="handleLogin">
+            登 录
+          </el-button>
         </el-form>
       </div>
     </div>
@@ -173,9 +161,16 @@ const createCode = () => {
           text-align: center;
         }
       }
-      .el-button {
+      .button {
         width: 100%;
         margin-top: 10px;
+      }
+      .send-wrap {
+        display: flex;
+        align-items: center;
+        .btn {
+          margin-left: 10px;
+        }
       }
     }
   }

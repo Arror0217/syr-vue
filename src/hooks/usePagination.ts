@@ -5,7 +5,6 @@ interface IDefaultPaginationData {
   OpenId: string
   keyward: string
   total: number
-  currentPage: number
   pageSizes: number[]
   pageSize: number
   layout: string
@@ -25,7 +24,6 @@ const defaultPaginationData: IDefaultPaginationData = {
   OpenId: "",
   keyward: "",
   total: 0,
-  currentPage: 1,
   pageSizes: [10, 20, 50],
   pageSize: 10,
   layout: "total, sizes, prev, pager, next, jumper"

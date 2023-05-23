@@ -1,6 +1,3 @@
-// import { KeepAlive } from "vue"
-// import { messageTypes } from "element-plus"
-// import { KeepAlive } from "vue"
 import { type RouteRecordRaw, createRouter, createWebHashHistory, createWebHistory } from "vue-router"
 
 const Layout = () => import("@/layout/index.vue")
@@ -135,6 +132,51 @@ export const constantRoutes: RouteRecordRaw[] = [
         meta: {
           title: "谜语管理",
           KeepAlive: true
+        }
+      },
+      {
+        path: "black",
+        name: "Black",
+        component: () => import("@/views/table/black.vue"),
+        meta: {
+          title: "黑名单管理",
+          keepAlive: true
+        }
+      },
+      {
+        path: "history",
+        name: "History",
+        component: () => import("@/views/table/history.vue"),
+        meta: {
+          title: "聊天记录管理",
+          KeepAlive: true
+        }
+      },
+      {
+        path: "manage",
+        name: "Manage",
+        component: () => import("@/views/table/manage.vue"),
+        meta: {
+          title: "管理员",
+          keepAlive: true
+        }
+      },
+      {
+        path: "record",
+        name: "Record",
+        component: () => import("@/views/table/record.vue"),
+        meta: {
+          title: "通关记录",
+          keepAlive: true
+        }
+      },
+      {
+        path: "reward",
+        name: "Reward",
+        component: () => import("@/views/table/reward.vue"),
+        meta: {
+          title: "获奖记录",
+          keepAlive: true
         }
       }
     ]

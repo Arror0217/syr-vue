@@ -2,11 +2,12 @@ import dayjs from "dayjs"
 
 /** 格式化时间 */
 export const formatDateTime = (time: string | number | Date) => {
-  if (!time) {
-    return "N/A"
+  if (!time && time !== 0) {
+    return ""
+  } else {
+    const date = new Date(time)
+    return dayjs(date).format("YYYY-MM-DD HH:mm:ss")
   }
-  const date = new Date(time)
-  return dayjs(date).format("YYYY-MM-DD HH:mm:ss")
 }
 
 /** 将全局 CSS 变量导入 JS 中使用 */
